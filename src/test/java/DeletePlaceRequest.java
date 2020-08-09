@@ -1,38 +1,42 @@
+import data.Resources;
+import data.PayLoad;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class DeletePlaceRequest {
 
+    Properties properties = new Properties();
+
+    @BeforeTest
+    public void getData() throws IOException {
+
+        FileInputStream fis = new FileInputStream(System.getProperty("user.dir") +
+                "\\src\\test\\resources\\env.properties");
+        properties.load(fis);
+
+    }
+
     @Test
     public void deletePlace() {
 
-        String strBody = "{" +
-                "\"location\": {" +
-                "\"lat\" : -38.383494," +
-                "\"lng\" : 133.427362" +
-                "}," +
-                "\"accuracy\": 50," +
-                "\"name\" : \"Frontline house\"," +
-                "\"phone_number\" : \"(+91) 983 893 3937\"," +
-                "\"address\" : \"29, side layout, cohen 09\"," +
-                "\"types\" : [\"shoe park\" , \"shop\"]," +
-                "\"website\" : \"http://google.com/\"," +
-                "\"language\" : \"French-IN\"" +
-                "}";
-
-        RestAssured.baseURI = "http://216.10.245.166";
+        RestAssured.baseURI = properties.getProperty("HOST");
+        System.out.println(properties.getProperty("HOST"));
 
         String res = given()
-                .queryParam("key", "qaclick123")
-                .body(strBody)
+                .queryParam("key", properties.getProperty("KEY"))
+                .body(PayLoad.getPostData())
                 .when()
-                .post("/maps/api/place/add/json")
+                .post(Resources.placePostData())
                 .then()
                 .assertThat()
                 .statusCode(200)

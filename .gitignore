@@ -4,7 +4,7 @@
 # Log file
 *.log
 
-# BlueJ files
+# BlueJ data
 *.ctxt
 
 # Mobile Tools for Java (J2ME)
@@ -32,7 +32,7 @@ hs_err_pid*
 *.dat
 
 # Addition
-# Ignore all temporary files in the root directory
+# Ignore all temporary data in the root directory
 *.[oa]
 
 # Single Module Project
@@ -96,7 +96,7 @@ hs_err_pid*
 # Ignore doc/notes.txt, but not doc/info/arch.txt
 # doc/*.txt
 
-# Ignore all .txt files in the directory doc/
+# Ignore all .txt data in the directory doc/
 # doc/**/*.txt
 
 # Ignore .doc .pfd .docx

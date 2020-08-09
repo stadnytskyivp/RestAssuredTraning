@@ -1,22 +1,39 @@
+import data.Resources;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class GetRequest {
 
+    Properties properties = new Properties();
+
+    @BeforeTest
+    public void getData() throws IOException {
+
+        FileInputStream fis = new FileInputStream(System.getProperty("user.dir") +
+                "\\src\\test\\resources\\env.properties");
+        properties.load(fis);
+
+    }
+
     @Test
     public void getPlaceAPI() {
-        RestAssured.baseURI = "https://maps.googleapis.com";
+        RestAssured.baseURI = properties.getProperty("HOST2");
 
         given()
                 .param("location", "-33.8670522,151.1957362")
                 .param("radius", "500")
                 .param("key", "AIzaSyBFE_zzoGme59y3KLZ436wgqX6WB0B-dUg")
                 .when()
-                .get("/maps/api/place/nearbysearch/json")
+                .get(Resources.placeGetData())
                 .then()
                 .assertThat()
                 .statusCode(200)

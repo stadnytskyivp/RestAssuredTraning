@@ -1,37 +1,41 @@
+import data.PayLoad;
+import data.Resources;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class PostRequest {
+
+    Properties properties = new Properties();
+
+    @BeforeTest
+    public void getData() throws IOException {
+
+        FileInputStream fis = new FileInputStream(System.getProperty("user.dir") +
+                "\\src\\test\\resources\\env.properties");
+        properties.load(fis);
+
+    }
 
     @Test
     public void postData() {
 
-        RestAssured.baseURI = "http://216.10.245.166";
-
-        String strBody = "{" +
-                "\"location\": {" +
-                "\"lat\" : -38.383494," +
-                "\"lng\" : 133.427362" +
-                "}," +
-                "\"accuracy\": 50," +
-                "\"name\" : \"Frontline house\"," +
-                "\"phone_number\" : \"(+91) 983 893 3937\"," +
-                "\"address\" : \"29, side layout, cohen 09\"," +
-                "\"types\" : [\"shoe park\" , \"shop\"]," +
-                "\"website\" : \"http://google.com/\"," +
-                "\"language\" : \"French-IN\"" +
-                "}";
+        RestAssured.baseURI = properties.getProperty("HOST");
 
         given()
-                .queryParam("key", "qaclick123")
-                .body(strBody)
+                .queryParam("key", properties.getProperty("KEY"))
+                .body(PayLoad.getPostData())
                 .when()
-                .post("/maps/api/place/add/json")
+                .post(Resources.placePostData())
                 .then()
                 .assertThat()
                 .statusCode(200)
