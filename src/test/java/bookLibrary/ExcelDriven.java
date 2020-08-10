@@ -1,3 +1,6 @@
+package bookLibrary;
+
+import data.PayLoad;
 import data.Resources;
 import data.ReusableMethods;
 import io.restassured.RestAssured;
@@ -9,12 +12,13 @@ import org.testng.annotations.Test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
 
-public class ParsePesponseData {
+public class ExcelDriven {
 
     Properties properties = new Properties();
 
@@ -28,43 +32,38 @@ public class ParsePesponseData {
     }
 
     @Test
-    public void getPlaceAPI() {
-        RestAssured.baseURI = properties.getProperty("HOST2");
+    public void addBook() throws IOException {
+
+        String strBody = GenerateStringFromResource(
+                "C:\\Eleks\\Work\\Tranings\\RestSideProject\\src\\main\\resources\\postData.xml");
+
+        RestAssured.baseURI = properties.getProperty("HOST");
 
         Response response = given()
-                .param("location", "-33.8670522,151.1957362")
-                .param("radius", "500")
-                .param("key", "AIzaSyBFE_zzoGme59y3KLZ436wgqX6WB0B-dUg")
+                .header("Content-Type", "application/json")
+                .body(PayLoad.postAddBookData())
+                .when()
                 .log()
                 .all()
-                .when()
-                .get(Resources.placeGetData())
+                .post(Resources.bookPostData())
                 .then()
                 .assertThat()
                 .statusCode(200)
-                .and()
                 .contentType(ContentType.JSON)
                 .and()
-                .body("results[0].name", equalTo("Sydney"))
-                .and()
-                .body("results[0].place_id", equalTo("ChIJP3Sa8ziYEmsRUKgyFmh9AQM"))
-                .and()
-                .header("Server", "scaffolding on HTTPServer2")
-//                .log()
-//                .body()
+                .log()
+                .body()
                 .extract()
                 .response();
 
         JsonPath jsonPath = ReusableMethods.rawToJSON(response);
+        String bookId = jsonPath.get("ID");
 
-        int resultCount = jsonPath.get("results.size()");
-        System.out.println("\n\nWe have " + resultCount + " results:");
 
-        for (int i = 0; i < resultCount; i++) {
-            String resultName = jsonPath.get("results[" + i + "].name");
-            System.out.println(i + ". " + resultName);
-        }
+    }
 
+    public static String GenerateStringFromResource(String path) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(path)));
     }
 
 }

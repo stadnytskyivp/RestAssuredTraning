@@ -1,8 +1,9 @@
+package googleMapsPlaceAPI;
+
 import data.PayLoad;
 import data.Resources;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -13,7 +14,7 @@ import java.util.Properties;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-public class DeletePlaceRequest {
+public class PostRequest {
 
     Properties properties = new Properties();
 
@@ -27,12 +28,11 @@ public class DeletePlaceRequest {
     }
 
     @Test
-    public void deletePlace() {
+    public void postData() {
 
         RestAssured.baseURI = properties.getProperty("HOST");
-        System.out.println(properties.getProperty("HOST"));
 
-        String res = given()
+        given()
                 .queryParam("key", properties.getProperty("KEY"))
                 .body(PayLoad.getPostDataPlaceAPI())
                 .when()
@@ -43,32 +43,7 @@ public class DeletePlaceRequest {
                 .and()
                 .contentType(ContentType.JSON)
                 .and()
-                .body("status", equalTo("OK"))
-                .extract()
-                .response()
-                .asString();
-
-        JsonPath js = new JsonPath(res);
-        String placeId = js.get("place_id");
-        System.out.println(placeId);
-
-        String bodyPlaceId = "{" +
-                "\"place_id\": \"" + placeId + "\"" +
-                "}";
-
-        given()
-                .queryParam("key", "qaclick123")
-                .body(bodyPlaceId)
-                .when()
-                .post("/maps/api/place/add/json")
-                .then()
-                .assertThat()
-                .statusCode(200)
-                .and()
-                .contentType(ContentType.JSON);
-//                .and()
-//                .body("status", equalTo("OK"));       // server don't response to the JSON delete request
-
+                .body("status", equalTo("OK"));
     }
 
 }

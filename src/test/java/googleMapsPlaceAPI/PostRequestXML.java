@@ -1,3 +1,5 @@
+package googleMapsPlaceAPI;
+
 import data.Resources;
 import data.ReusableMethods;
 import io.restassured.RestAssured;
