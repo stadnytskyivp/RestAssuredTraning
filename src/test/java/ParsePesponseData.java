@@ -35,6 +35,8 @@ public class ParsePesponseData {
                 .param("location", "-33.8670522,151.1957362")
                 .param("radius", "500")
                 .param("key", "AIzaSyBFE_zzoGme59y3KLZ436wgqX6WB0B-dUg")
+                .log()
+                .all()
                 .when()
                 .get(Resources.placeGetData())
                 .then()
@@ -48,13 +50,15 @@ public class ParsePesponseData {
                 .body("results[0].place_id", equalTo("ChIJP3Sa8ziYEmsRUKgyFmh9AQM"))
                 .and()
                 .header("Server", "scaffolding on HTTPServer2")
+//                .log()
+//                .body()
                 .extract()
                 .response();
 
         JsonPath jsonPath = ReusableMethods.rawToJSON(response);
 
         int resultCount = jsonPath.get("results.size()");
-        System.out.println("We have " + resultCount + " results:");
+        System.out.println("\n\nWe have " + resultCount + " results:");
 
         for (int i = 0; i < resultCount; i++) {
             String resultName = jsonPath.get("results[" + i + "].name");
