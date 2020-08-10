@@ -33,7 +33,7 @@ public class PostRequest {
 
         given()
                 .queryParam("key", properties.getProperty("KEY"))
-                .body(PayLoad.getPostData())
+                .body(PayLoad.getPostDataPlaceAPI())
                 .when()
                 .post(Resources.placePostData())
                 .then()

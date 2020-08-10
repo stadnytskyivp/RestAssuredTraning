@@ -2,7 +2,7 @@ package data;
 
 public class PayLoad {
 
-    public static String getPostData() {
+    public static String getPostDataPlaceAPI() {
 
         String strBody = "{" +
                 "\"location\": {" +
@@ -18,6 +18,14 @@ public class PayLoad {
                 "\"language\" : \"French-IN\"" +
                 "}";
 
+        return strBody;
+    }
+
+    public static String postAddBookData() {
+
+        String strBody = "{\r\n\"name\":\"Learn Appium Automation with Java\",\r\n" +
+                "\"isbn\":\"bcgghzdq\",\r\n\"aisle\":\"2217\",\r\n" +
+                "\"author\":\"John foe\"\r\n}";
         return strBody;
     }
 

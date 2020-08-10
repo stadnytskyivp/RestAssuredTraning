@@ -34,7 +34,7 @@ public class DeletePlaceRequest {
 
         String res = given()
                 .queryParam("key", properties.getProperty("KEY"))
-                .body(PayLoad.getPostData())
+                .body(PayLoad.getPostDataPlaceAPI())
                 .when()
                 .post(Resources.placePostData())
                 .then()

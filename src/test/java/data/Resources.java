@@ -17,4 +17,9 @@ public class Resources {
         return res;
     }
 
+    public static String bookPostData(){
+        String res = "/Library/Addbook.php";
+        return res;
+    }
+
 }
