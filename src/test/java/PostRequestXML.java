@@ -26,7 +26,7 @@ public class PostRequestXML {
     public void getData() throws IOException {
 
         FileInputStream fis = new FileInputStream(System.getProperty("user.dir") +
-                "\\src\\test\\resources\\env.properties");
+                "\\src\\main\\resources\\env.properties");
         properties.load(fis);
 
     }
@@ -35,7 +35,7 @@ public class PostRequestXML {
     public void postData() throws IOException {
 
         String strBody = GenerateStringFromResource(
-                "C:\\Eleks\\Work\\Tranings\\RestSideProject\\src\\test\\resources\\postData.xml");
+                "C:\\Eleks\\Work\\Tranings\\RestSideProject\\src\\main\\resources\\postData.xml");
 
         RestAssured.baseURI = properties.getProperty("HOST");
 

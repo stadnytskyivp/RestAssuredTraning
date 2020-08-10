@@ -1,9 +1,8 @@
 import data.Resources;
-import data.PayLoad;
 import data.ReusableMethods;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
+import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -14,9 +13,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import static data.ReusableMethods.rawToXML;
 import static io.restassured.RestAssured.given;
 
-public class ExcelDriven {
+public class PostRequestXML {
 
     Properties properties = new Properties();
 
@@ -30,7 +30,7 @@ public class ExcelDriven {
     }
 
     @Test
-    public void addBook() throws IOException {
+    public void postData() throws IOException {
 
         String strBody = GenerateStringFromResource(
                 "C:\\Eleks\\Work\\Tranings\\RestSideProject\\src\\main\\resources\\postData.xml");
@@ -38,25 +38,20 @@ public class ExcelDriven {
         RestAssured.baseURI = properties.getProperty("HOST");
 
         Response response = given()
-                .header("Content-Type", "application/json")
-                .body(PayLoad.postAddBookData())
+                .queryParam("key", properties.getProperty("KEY"))
+                .body(strBody)
                 .when()
-                .log()
-                .all()
-                .post(Resources.bookPostData())
+                .post(Resources.placePostDataXML())
                 .then()
                 .assertThat()
                 .statusCode(200)
-                .contentType(ContentType.JSON)
                 .and()
-                .log()
-                .body()
+                .contentType(ContentType.XML)
                 .extract()
                 .response();
 
-        JsonPath jsonPath = ReusableMethods.rawToJSON(response);
-        String bookId = jsonPath.get("ID");
-
+        XmlPath xmlPath = ReusableMethods.rawToXML(response);
+        System.out.println(xmlPath.get("response.place_id").toString());
 
     }
 
