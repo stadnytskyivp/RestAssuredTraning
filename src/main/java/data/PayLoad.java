@@ -21,10 +21,10 @@ public class PayLoad {
         return strBody;
     }
 
-    public static String postAddBookData() {
+    public static String postAddBookData(String aisle, String isbn) {
 
         String strBody = "{\r\n\"name\":\"Learn Appium Automation with Java\",\r\n" +
-                "\"isbn\":\"bcgghzdq\",\r\n\"aisle\":\"2217\",\r\n" +
+                "\"isbn\":\"" + aisle + "\",\r\n\"aisle\":\"" + isbn + "\",\r\n" +
                 "\"author\":\"John foe\"\r\n}";
         return strBody;
     }
