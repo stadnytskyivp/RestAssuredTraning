@@ -1,6 +1,8 @@
 package jiraAPI;
 
-import data.*;
+import data.PayLoad;
+import data.Resources;
+import data.ReusableMethods;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -13,7 +15,7 @@ import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 
-public class CreateIssue {
+public class AddComment {
 
     Properties properties = new Properties();
 
@@ -27,52 +29,62 @@ public class CreateIssue {
     }
 
     @Test
-    public void createJiraIssue() throws IOException {
+    public void addComment() throws IOException {
 
         RestAssured.baseURI = properties.getProperty("HOST_JIRA");
 
-        Response response = given()
-                .header("Content-Type", "application/json")
-                .header("Cookie", "JSESSIONID=" + NewJiraSession.getSessionKey())
-                .body(PayLoad.postCreateJiraIssue())
-                .log().all()
-                .when()
-                .post(Resources.jiraPostCreateIssue())
-                .then()
-                .log().all()
-                .statusCode(201)
-                .extract()
-                .response();
+        String sessionKey = NewJiraSession.getSessionKey();
 
-        JsonPath jsonPath = ReusableMethods.rawToJSON(response);
-        String issueId = jsonPath.get("id");
-        System.out.println("new ID = "+issueId);
-
-    }
-
-    @Test
-    public String createJiraIssue(String sessionKey) {
-
-        RestAssured.baseURI = properties.getProperty("HOST_JIRA");
+        CreateIssue createIssue = new CreateIssue();
 
         Response response = given()
                 .header("Content-Type", "application/json")
                 .header("Cookie", "JSESSIONID=" + sessionKey)
-                .body(PayLoad.postCreateJiraIssue())
-                .log().all()
+                .body(PayLoad.сommentJiraIssue())
+                .log()
+                .body()
                 .when()
-                .post(Resources.jiraPostCreateIssue())
+                .post(Resources.jiraPostAddComment(createIssue.createJiraIssue(sessionKey)))
                 .then()
-                .log().all()
+                .log()
+                .all()
                 .statusCode(201)
                 .extract()
                 .response();
 
         JsonPath jsonPath = ReusableMethods.rawToJSON(response);
-        String issueId = jsonPath.get("id");
-        System.out.println("new ID = "+issueId);
+        String commentId = jsonPath.get("id");
+        System.out.println("new ID = " + commentId);
 
-        return issueId;
+    }
+
+    @Test
+    public String addComment(String sessionKey) {
+
+        RestAssured.baseURI = properties.getProperty("HOST_JIRA");
+
+        CreateIssue createIssue = new CreateIssue();
+
+        Response response = given()
+                .header("Content-Type", "application/json")
+                .header("Cookie", "JSESSIONID=" + sessionKey)
+                .body(PayLoad.сommentJiraIssue())
+                .log()
+                .body()
+                .when()
+                .post(Resources.jiraPostAddComment(createIssue.createJiraIssue(sessionKey)))
+                .then()
+                .log()
+                .all()
+                .statusCode(201)
+                .extract()
+                .response();
+
+        JsonPath jsonPath = ReusableMethods.rawToJSON(response);
+        String commentId = jsonPath.get("id");
+        System.out.println("new ID = " + commentId);
+
+        return commentId;
 
     }
 

@@ -49,7 +49,6 @@ public class PayLoad {
         return strBody;
     }
 
-
     public static String сommentJiraIssue() {
         String strBody = "{ \"body\": \"Inserting comment from the automation code\"," +
                 "\"visibility\": {" +
@@ -59,5 +58,13 @@ public class PayLoad {
         return strBody;
     }
 
+    public static String reсommentJiraIssue() {
+        String strBody = "{ \"body\": \"Updating comment from the automation code\"," +
+                "\"visibility\": {" +
+                "\"type\": \"role\"," +
+                "\"value\": \"Administrators\" }" +
+                "}";
+        return strBody;
+    }
 
 }
