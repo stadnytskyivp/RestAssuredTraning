@@ -22,8 +22,13 @@ public class Resources {
         return res;
     }
 
-    public static String jiraPostSession(){
+    public static String jiraPostStartSession(){
         String res = "/rest/auth/1/session";
+        return res;
+    }
+
+    public static String jiraPostCreateIssue(){
+        String res = "/rest/auth/2/issue";
         return res;
     }
 

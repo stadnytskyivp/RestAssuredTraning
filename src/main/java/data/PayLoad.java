@@ -35,4 +35,29 @@ public class PayLoad {
         return strBody;
     }
 
+    public static String postCreateJiraIssue() {
+        String strBody =     "{"+
+                "\"fields\": {"+
+                "\"project\":{"+
+                "\"key\": \"RES\""+
+                "},"+
+                "\"summary\": \"Issue 5 for adding comment\","+
+                "\"description\": \"Creating my second bug\","+
+                "\"issuetype\": {"+
+                "\"name\": \"Bug\""+
+                "}}}";
+        return strBody;
+    }
+
+
+    public static String сommentJiraIssue() {
+        String strBody = "{ \"body\": \"Inserting comment from the automation code\"," +
+                "\"visibility\": {" +
+                "\"type\": \"role\"," +
+                "\"value\": \"Administrators\" }" +
+                "}";
+        return strBody;
+    }
+
+
 }

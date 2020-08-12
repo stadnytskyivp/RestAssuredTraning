@@ -13,7 +13,7 @@ import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 
-public class Issue {
+public class CreateIssue {
 
     Properties properties = new Properties();
 
@@ -27,23 +27,25 @@ public class Issue {
     }
 
     @Test
-    public void jiraIssues(){
+    public void jiraIssues() throws IOException {
 
         RestAssured.baseURI = properties.getProperty("HOST_JIRA");
 
         Response response = given()
                 .header("Content-Type", "application/json")
-                .body(PayLoad.postStartJiraSession())
+                .header("Cookie", "JSESSIONID=" + NewJiraSession.getSessionKey())
+                .body(PayLoad.postCreateJiraIssue())
+                .log().all()
                 .when()
-                .post(Resources.jiraPostSession())
-                .then()
-                .statusCode(200)
+                .post(Resources.jiraPostCreateIssue())
+                .then().log().all()
+                .statusCode(201)
                 .extract()
                 .response();
 
         JsonPath jsonPath = ReusableMethods.rawToJSON(response);
-        String session = jsonPath.get("session.value");
-        System.out.println(session);
+        String id = jsonPath.get("id");
+        System.out.println("new ID = "+id);
 
     }
 
