@@ -29,4 +29,10 @@ public class PayLoad {
         return strBody;
     }
 
+    public static String postStartJiraSession() {
+
+        String strBody = "{\r\n    \"username\":\"stadnytskyi.volodymyr\",\r\n    \"password\":\"qwaszxcde\"\r\n}";
+        return strBody;
+    }
+
 }

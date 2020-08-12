@@ -28,7 +28,7 @@ public class GetRequest {
 
     @Test
     public void getPlaceAPI() {
-        RestAssured.baseURI = properties.getProperty("HOST2");
+        RestAssured.baseURI = properties.getProperty("HOST_MAPS");
 
         given()
                 .param("location", "-33.8670522,151.1957362")

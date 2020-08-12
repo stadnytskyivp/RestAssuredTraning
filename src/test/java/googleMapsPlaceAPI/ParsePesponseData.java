@@ -31,7 +31,7 @@ public class ParsePesponseData {
 
     @Test
     public void getPlaceAPI() {
-        RestAssured.baseURI = properties.getProperty("HOST2");
+        RestAssured.baseURI = properties.getProperty("HOST_MAPS");
 
         Response response = given()
                 .param("location", "-33.8670522,151.1957362")
