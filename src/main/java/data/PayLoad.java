@@ -41,8 +41,8 @@ public class PayLoad {
                 "\"project\":{"+
                 "\"key\": \"RES\""+
                 "},"+
-                "\"summary\": \"Issue 5 for adding comment\","+
-                "\"description\": \"Creating my second bug\","+
+                "\"summary\": \"Issue adding from IDEA\","+
+                "\"description\": \"Creating my second bug using java\","+
                 "\"issuetype\": {"+
                 "\"name\": \"Bug\""+
                 "}}}";

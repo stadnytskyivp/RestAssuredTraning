@@ -28,7 +28,7 @@ public class Resources {
     }
 
     public static String jiraPostCreateIssue(){
-        String res = "/rest/auth/2/issue";
+        String res = "/rest/api/2/issue";
         return res;
     }
 
