@@ -36,8 +36,8 @@ public class DynamicJson {
     @Test(priority = 1, dataProvider = "BooksData", dataProviderClass = Books.class)
     public void addBook(String isbn, String aisle) throws IOException {
 
-        String strBody = GenerateStringFromResource(
-                "C:\\Eleks\\Work\\Tranings\\RestSideProject\\src\\main\\resources\\postData.xml");
+        String strBody = GenerateStringFromResource(System.getProperty("user.dir") +
+                "\\src\\main\\resources\\postData.xml");
 
         RestAssured.baseURI = properties.getProperty("HOST");
 
