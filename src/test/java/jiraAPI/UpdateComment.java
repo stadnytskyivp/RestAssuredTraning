@@ -36,7 +36,10 @@ public class UpdateComment {
         String sessionKey = NewJiraSession.getSessionKey();
 
         CreateIssue createIssue = new CreateIssue();
-        AddComment addComment = new AddComment();
+        String issueId = createIssue.createJiraIssue(sessionKey);
+
+        AddComment comment = new AddComment();
+        String commentId = comment.addComment(sessionKey, issueId);
 
         Response response = given()
                 .header("Content-Type", "application/json")
@@ -45,12 +48,11 @@ public class UpdateComment {
                 .log()
                 .body()
                 .when()
-                .put(Resources.jiraPostUpdateComment(createIssue.createJiraIssue(sessionKey),
-                                                     addComment.addComment(sessionKey)))
+                .put(Resources.jiraPostUpdateComment(issueId, commentId))
                 .then()
                 .log()
                 .all()
-                .statusCode(201)
+                .statusCode(200)
                 .extract()
                 .response();
 

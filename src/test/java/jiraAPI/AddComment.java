@@ -36,6 +36,7 @@ public class AddComment {
         String sessionKey = NewJiraSession.getSessionKey();
 
         CreateIssue createIssue = new CreateIssue();
+        String issueId = createIssue.createJiraIssue(sessionKey);
 
         Response response = given()
                 .header("Content-Type", "application/json")
@@ -44,7 +45,7 @@ public class AddComment {
                 .log()
                 .body()
                 .when()
-                .post(Resources.jiraPostAddComment(createIssue.createJiraIssue(sessionKey)))
+                .post(Resources.jiraPostAddComment(issueId))
                 .then()
                 .log()
                 .all()
@@ -58,12 +59,10 @@ public class AddComment {
 
     }
 
-    @Test
-    public String addComment(String sessionKey) {
+    public String addComment(String sessionKey, String issueId) throws IOException {
 
+        getData();
         RestAssured.baseURI = properties.getProperty("HOST_JIRA");
-
-        CreateIssue createIssue = new CreateIssue();
 
         Response response = given()
                 .header("Content-Type", "application/json")
@@ -72,7 +71,7 @@ public class AddComment {
                 .log()
                 .body()
                 .when()
-                .post(Resources.jiraPostAddComment(createIssue.createJiraIssue(sessionKey)))
+                .post(Resources.jiraPostAddComment(issueId))
                 .then()
                 .log()
                 .all()
@@ -82,7 +81,6 @@ public class AddComment {
 
         JsonPath jsonPath = ReusableMethods.rawToJSON(response);
         String commentId = jsonPath.get("id");
-        System.out.println("new ID = " + commentId);
 
         return commentId;
 

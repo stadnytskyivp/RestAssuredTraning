@@ -50,10 +50,12 @@ public class CreateIssue {
 
     }
 
-    @Test
-    public String createJiraIssue(String sessionKey) {
+    public String createJiraIssue(String sessionKey) throws IOException {
 
+        getData();
         RestAssured.baseURI = properties.getProperty("HOST_JIRA");
+
+        System.out.println("base uri = "+RestAssured.baseURI);
 
         Response response = given()
                 .header("Content-Type", "application/json")
