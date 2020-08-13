@@ -7,7 +7,7 @@ public class Books {
     @DataProvider(name="BooksData")
     public Object[][] getBooks() {
 
-        return new Object[][] {{"witcher","1"}, {"witcher","2"}, {"witcher","3"}};
+        return new Object[][] {{"witcher","4"}, {"witcher","5"}, {"witcher","6"}};
 
     }
 
