@@ -3,11 +3,14 @@ package oauth;
 import data.URIs;
 import io.restassured.parsing.Parser;
 import io.restassured.path.json.JsonPath;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import pojo.API;
 import pojo.GetCourse;
 import pojo.WebAutomation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -20,6 +23,8 @@ public class OAuthTest {
 
     @Test
     public void getCoursesTest() {
+
+        String[] courseTitles = {"Selenium Webdriver Java","Cypress","Protractor"};
 
 //        String driverPath = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
 //        System.setProperty("webdriver.chrome.driver", driverPath);
@@ -36,7 +41,7 @@ public class OAuthTest {
 //        Thread.sleep(4000);
 //
 //        String strURL = driver.getCurrentUrl();
-        String strURL = "https://rahulshettyacademy.com/getCourse.php?code=4%2F3AF3nxkCGu5CwDAR2KNbf-Nbg0Kcsicsh3bwZI5-xOxQ-QJVUD4q48OnRkOa92zHSgWQ2MZStwNwXvEnCls-Kho&scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none#";
+        String strURL = "https://rahulshettyacademy.com/getCourse.php?code=4%2F3AFApjZYRHYxNm-Dy0yKpEII0LW4juxRxveF1YAGkFmZkuKlx7cerVnxXs_FlbwuE_KtNSIthVQ9PJ0eXeDo9sU&scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none#";
 
         strURL = strURL.split("code=")[1];
         String strCode = strURL.split("&scope")[0];
@@ -85,11 +90,15 @@ public class OAuthTest {
             System.out.println(apiCourses.get(i).getPrice());
         }
 
-        System.out.println("Web Automation courses : ");
+        ArrayList<String> getList = new ArrayList<String>();
+
         List<WebAutomation> automationCourses = getCourse.getCourses().getWebAutomation();
-        for (int i = 0; i < automationCourses.size(); i++) {
-            System.out.println(automationCourses.get(i).getCourseTitle());
+        for (WebAutomation automationCours : automationCourses) {
+            getList.add(automationCours.getCourseTitle());
         }
+        List<String> expectedList = Arrays.asList(courseTitles);
+
+        Assert.assertEquals(expectedList,getList);
 
 
     }
