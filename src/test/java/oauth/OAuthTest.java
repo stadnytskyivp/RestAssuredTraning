@@ -1,13 +1,14 @@
 package oauth;
 
 import data.URIs;
+import io.restassured.parsing.Parser;
 import io.restassured.path.json.JsonPath;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+import pojo.API;
+import pojo.GetCourse;
+import pojo.WebAutomation;
 
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -17,7 +18,8 @@ public class OAuthTest {
     final static String CLIENT_SECRET = "erZOWM9g3UtwNRj340YYaK_W";
     final static String GRANT_TYPE = "authorization_code";
 
-    public static void main(String[] args) throws InterruptedException {
+    @Test
+    public void getCoursesTest() {
 
 //        String driverPath = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
 //        System.setProperty("webdriver.chrome.driver", driverPath);
@@ -34,7 +36,7 @@ public class OAuthTest {
 //        Thread.sleep(4000);
 //
 //        String strURL = driver.getCurrentUrl();
-        String strURL = "https://rahulshettyacademy.com/getCourse.php?code=4%2F3AFyi0hvnNVBDqO-zGTvPu0JWpsByfQNKZcHMWv5a4tYpRL_Sd-ts7X3gD2oWWk3ZhzwxBRbZ7g12UsCoffEaSg&scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none#";
+        String strURL = "https://rahulshettyacademy.com/getCourse.php?code=4%2F3AF3nxkCGu5CwDAR2KNbf-Nbg0Kcsicsh3bwZI5-xOxQ-QJVUD4q48OnRkOa92zHSgWQ2MZStwNwXvEnCls-Kho&scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none#";
 
         strURL = strURL.split("code=")[1];
         String strCode = strURL.split("&scope")[0];
@@ -50,21 +52,45 @@ public class OAuthTest {
                 .log()
                 .all()
                 .post("https://www.googleapis.com/oauth2/v4/token")
+                .then()
+                .statusCode(200)
+                .extract()
+                .response()
                 .asString();
 
         JsonPath jsonPath = new JsonPath(accessTokenResponse);
         String accessToken = jsonPath.getString("access_token");
 
 
-        String response = given()
+        GetCourse getCourse = given()
                 .queryParam("access_token", accessToken)
+                .expect()
+                .defaultParser(Parser.JSON)
                 .when()
-                .log()
-                .all()
                 .get("https://rahulshettyacademy.com/getCourse.php")
-                .asString();
+                .then()
+                .statusCode(200)
+                .extract()
+                .response()
+                .as(GetCourse.class);
 
-        System.out.println(response);
+        System.out.println(getCourse.getLinkedIn());
+        System.out.println(getCourse.getInstructor());
+//        System.out.println(getCourse.getCourses().getApi().get(1).getCourseTitle());
+
+        System.out.println("\nAPI courses : ");
+        List<API> apiCourses = getCourse.getCourses().getApi();
+        for (int i = 0; i < apiCourses.size(); i++) {
+            System.out.println(apiCourses.get(i).getCourseTitle());
+            System.out.println(apiCourses.get(i).getPrice());
+        }
+
+        System.out.println("Web Automation courses : ");
+        List<WebAutomation> automationCourses = getCourse.getCourses().getWebAutomation();
+        for (int i = 0; i < automationCourses.size(); i++) {
+            System.out.println(automationCourses.get(i).getCourseTitle());
+        }
+
 
     }
 
