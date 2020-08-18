@@ -1,4 +1,4 @@
-package pojo;
+package pojo.deserialization.courses;
 
 public class WebAutomation {
     private String courseTitle;

@@ -1,14 +1,21 @@
-package oauth;
+package pojo.deserialization;
 
 import data.URIs;
 import io.restassured.parsing.Parser;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.Response;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+import pojo.deserialization.courses.API;
+import pojo.deserialization.courses.GetCourse;
+import pojo.deserialization.courses.WebAutomation;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
-public class OAuthTest {
+public class Deserialization {
 
     final static String CLIENT_ID = "692183103107-p0m7ent2hk7suguv4vq22hjcfhcr43pj.apps.googleusercontent.com";
     final static String CLIENT_SECRET = "erZOWM9g3UtwNRj340YYaK_W";
@@ -16,6 +23,8 @@ public class OAuthTest {
 
     @Test
     public void getCoursesTest() {
+
+        String[] courseTitles = {"Selenium Webdriver Java","Cypress","Protractor"};
 
 //        String driverPath = System.getProperty("user.dir") + "\\src\\main\\resources\\chromedriver.exe";
 //        System.setProperty("webdriver.chrome.driver", driverPath);
@@ -58,7 +67,7 @@ public class OAuthTest {
         String accessToken = jsonPath.getString("access_token");
 
 
-        Response response = given()
+        GetCourse getCourse = given()
                 .queryParam("access_token", accessToken)
                 .expect()
                 .defaultParser(Parser.JSON)
@@ -67,9 +76,29 @@ public class OAuthTest {
                 .then()
                 .statusCode(200)
                 .extract()
-                .response();
+                .response()
+                .as(GetCourse.class);
 
-        System.out.println(response.asString());
+        System.out.println(getCourse.getLinkedIn());
+        System.out.println(getCourse.getInstructor());
+//        System.out.println(getCourse.getCourses().getApi().get(1).getCourseTitle());
+
+        System.out.println("\nAPI courses : ");
+        List<API> apiCourses = getCourse.getCourses().getApi();
+        for (int i = 0; i < apiCourses.size(); i++) {
+            System.out.println(apiCourses.get(i).getCourseTitle());
+            System.out.println(apiCourses.get(i).getPrice());
+        }
+
+        ArrayList<String> getList = new ArrayList<String>();
+
+        List<WebAutomation> automationCourses = getCourse.getCourses().getWebAutomation();
+        for (WebAutomation automationCourse : automationCourses) {
+            getList.add(automationCourse.getCourseTitle());
+        }
+        List<String> expectedList = Arrays.asList(courseTitles);
+
+        Assert.assertEquals(expectedList,getList);
 
 
     }
