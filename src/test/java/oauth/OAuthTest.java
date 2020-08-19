@@ -32,7 +32,7 @@ public class OAuthTest {
 //        Thread.sleep(4000);
 //
 //        String strURL = driver.getCurrentUrl();
-        String strURL = "https://rahulshettyacademy.com/getCourse.php?code=4%2F3AFApjZYRHYxNm-Dy0yKpEII0LW4juxRxveF1YAGkFmZkuKlx7cerVnxXs_FlbwuE_KtNSIthVQ9PJ0eXeDo9sU&scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none#";
+        String strURL = "https://rahulshettyacademy.com/getCourse.php?code=4%2F3QFTudCRMTWxbIjTyLEVc4V3f1bgZiBrdUnM6scoYfW8xihls7erJH7WuqITu7iv9tvEpXF8auRpJI28sp8OklE&scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none#";
 
         strURL = strURL.split("code=")[1];
         String strCode = strURL.split("&scope")[0];

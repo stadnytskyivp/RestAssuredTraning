@@ -6,12 +6,14 @@ import io.restassured.path.json.JsonPath;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pojo.deserialization.courses.API;
+import pojo.deserialization.courses.Course;
 import pojo.deserialization.courses.GetCourse;
 import pojo.deserialization.courses.WebAutomation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static io.restassured.RestAssured.given;
 
@@ -41,7 +43,7 @@ public class Deserialization {
 //        Thread.sleep(4000);
 //
 //        String strURL = driver.getCurrentUrl();
-        String strURL = "https://rahulshettyacademy.com/getCourse.php?code=4%2F3AFApjZYRHYxNm-Dy0yKpEII0LW4juxRxveF1YAGkFmZkuKlx7cerVnxXs_FlbwuE_KtNSIthVQ9PJ0eXeDo9sU&scope=email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=none#";
+        String strURL = "https://rahulshettyacademy.com/getCourse.php?code=4%2F3QGj9iDwAEVVH_igY9RZ75syUAmqmQtumRA8YlzL6ONrkWG0eUCa9maF0iJjoPwdpx8Bay1kpdeFXB1VBng5dTU&scope=email+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&authuser=0&prompt=none#";
 
         strURL = strURL.split("code=")[1];
         String strCode = strURL.split("&scope")[0];
@@ -84,17 +86,18 @@ public class Deserialization {
 //        System.out.println(getCourse.getCourses().getApi().get(1).getCourseTitle());
 
         System.out.println("\nAPI courses : ");
-        List<API> apiCourses = getCourse.getCourses().getApi();
-        for (int i = 0; i < apiCourses.size(); i++) {
+        List<Course> apiCourses = getCourse.getCourses().getApi();
+        IntStream.range(0, apiCourses.size()).forEach(i -> {
             System.out.println(apiCourses.get(i).getCourseTitle());
             System.out.println(apiCourses.get(i).getPrice());
-        }
+        });
 
         ArrayList<String> getList = new ArrayList<String>();
 
-        List<WebAutomation> automationCourses = getCourse.getCourses().getWebAutomation();
-        for (WebAutomation automationCourse : automationCourses) {
+        List<Course> automationCourses = getCourse.getCourses().getWebAutomation();
+        for (Course automationCourse : automationCourses) {
             getList.add(automationCourse.getCourseTitle());
+
         }
         List<String> expectedList = Arrays.asList(courseTitles);
 
